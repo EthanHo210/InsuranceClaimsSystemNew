@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+
+<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="JavaFiles.PolicyOwnerDashboardController">
+    <Label text="JavaFiles.Policy Owner Dashboard" style="-fx-font-size: 20px;"/>
+    <Button text="View Policies"/>
+    <TableView fx:id="policiesTable">
+        <columns>
+            <TableColumn text="JavaFiles.Policy ID" fx:id="policyIdColumn" prefWidth="100"/>
+            <TableColumn text="JavaFiles.Policy Name" fx:id="policyNameColumn" prefWidth="150"/>
+            <TableColumn text="Coverage" fx:id="coverageColumn" prefWidth="100"/>
+        </columns>
+    </TableView>
+</VBox>
