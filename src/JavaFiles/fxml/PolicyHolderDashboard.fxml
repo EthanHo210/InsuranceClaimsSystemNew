@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+
+<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="JavaFiles.PolicyHolderDashboardController">
+    <Label text="JavaFiles.Policy Holder Dashboard" style="-fx-font-size: 20px;"/>
+    <Button text="Submit New JavaFiles.Claim"/>
+    <TableView fx:id="claimsTable">
+        <columns>
+            <TableColumn text="JavaFiles.Claim ID" fx:id="claimIdColumn" prefWidth="100"/>
+            <TableColumn text="Date" fx:id="dateColumn" prefWidth="150"/>
+            <TableColumn text="Status" fx:id="statusColumn" prefWidth="100"/>
+        </columns>
+    </TableView>
+</VBox>
