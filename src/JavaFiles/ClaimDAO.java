@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 public class ClaimDAO {
     public Claim getClaimByUserId(int userId) {
@@ -18,12 +17,16 @@ public class ClaimDAO {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     claim = new Claim(
-                            rs.getInt("claim_id"),
                             rs.getInt("user_id"),
+                            rs.getString("username"),
+                            rs.getString("email"),
+                            rs.getString("phone"),
+                            rs.getString("address"),
+                            rs.getInt("claim_id"),
                             rs.getString("status"),
-                            rs.getDate("date_filled"),
-                            rs.getDate("date_processed"),
-                            rs.getString("description")
+                            rs.getString("description"),
+                            rs.getDate("date_filed"),
+                            rs.getDate("date_processed")
                     );
                 }
             }

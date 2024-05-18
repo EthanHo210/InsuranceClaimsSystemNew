@@ -11,43 +11,86 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.Date;
 public class PolicyOwnerDashboardController {
+    @FXML
+    private TableView<Claim> dependentTable;
+    @FXML
+    private TableColumn<Claim, Integer> userIdColumn;
+    @FXML
+    private TableColumn<Claim, String> usernameColumn;
+    @FXML
+    private TableColumn<Claim, String> emailColumn;
+    @FXML
+    private TableColumn<Claim, String> phoneColumn;
+    @FXML
+    private TableColumn<Claim, String> addressColumn;
+    @FXML
+    private TableColumn<Claim, Integer> claimIdColumn;
+    @FXML
+    private TableColumn<Claim, String> statusColumn;
+    @FXML
+    private TableColumn<Claim, String> descriptionColumn;
+    @FXML
+    private TableColumn<Claim, Date> dateFiledColumn;
+    @FXML
+    private TableColumn<Claim, Date> dateProcessedColumn;
 
-    @FXML
-    private TableView<Policy> policiesTable;
-    @FXML
-    private TableColumn<Policy, Integer> policyIdColumn;
-    @FXML
-    private TableColumn<Policy, String> policyNameColumn;
-    @FXML
-    private TableColumn<Policy, String> coverageColumn;
+    private String currentUsername;
 
     @FXML
     public void initialize() {
-        policyIdColumn.setCellValueFactory(new PropertyValueFactory<>("policyId"));
-        policyNameColumn.setCellValueFactory(new PropertyValueFactory<>("policyName"));
-        coverageColumn.setCellValueFactory(new PropertyValueFactory<>("coverage"));
-
-        // Load data into the table
-        loadPoliciesData();
+        userIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        claimIdColumn.setCellValueFactory(new PropertyValueFactory<>("claimId"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        dateFiledColumn.setCellValueFactory(new PropertyValueFactory<>("dateFiled"));
+        dateProcessedColumn.setCellValueFactory(new PropertyValueFactory<>("dateProcessed"));
     }
 
-    private void loadPoliciesData() {
-        ObservableList<Policy> policies = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM Policies"; // Adjust the SQL query as per your table structure
+    public void setUsername(String username) {
+        this.currentUsername = username;
+        loadDependentData();
+    }
+
+    @FXML
+    public void loadDependentData() {
+        ObservableList<Claim> claims = FXCollections.observableArrayList();
+        String sql = "SELECT users.user_id, users.username, users.email, users.phone, users.address, claims.claim_id, claims.status, claims.description, claims.date_filed, claims.date_processed " +
+                "FROM users " +
+                "INNER JOIN claims ON users.user_id = claims.user_id " +
+                "WHERE users.username = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            while (rs.next()) {
-                policies.add(new Policy(rs.getInt("policyId"), rs.getString("policyName"), rs.getString("coverage")));
+            pstmt.setString(1, currentUsername);
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                while (rs.next()) {
+                    int userId = rs.getInt("user_id");
+                    String username = rs.getString("username");
+                    String email = rs.getString("email");
+                    String phone = rs.getString("phone");
+                    String address = rs.getString("address");
+                    int claimId = rs.getInt("claim_id");
+                    String status = rs.getString("status");
+                    String description = rs.getString("description");
+                    Date dateFiled = rs.getDate("date_filed");
+                    Date dateProcessed = rs.getDate("date_processed");
+
+
+                    claims.add(new Claim(userId, username, email, phone, address, claimId, status, description, dateFiled, dateProcessed));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        policiesTable.setItems(policies);
+        dependentTable.setItems(claims);
     }
 }

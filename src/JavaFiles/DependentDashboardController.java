@@ -11,19 +11,31 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.Date;
 public class DependentDashboardController {
 
     @FXML
-    private TableView<User> dependentTable;
+    private TableView<Claim> dependentTable;
     @FXML
-    private TableColumn<User, Integer> userIdColumn;
+    private TableColumn<Claim, Integer> userIdColumn;
     @FXML
-    private TableColumn<User, String> usernameColumn;
+    private TableColumn<Claim, String> usernameColumn;
     @FXML
-    private TableColumn<User, String> emailColumn;
+    private TableColumn<Claim, String> emailColumn;
     @FXML
-    private TableColumn<User, String> phoneColumn;
+    private TableColumn<Claim, String> phoneColumn;
+    @FXML
+    private TableColumn<Claim, String> addressColumn;
+    @FXML
+    private TableColumn<Claim, Integer> claimIdColumn;
+    @FXML
+    private TableColumn<Claim, String> statusColumn;
+    @FXML
+    private TableColumn<Claim, String> descriptionColumn;
+    @FXML
+    private TableColumn<Claim, Date> dateFiledColumn;
+    @FXML
+    private TableColumn<Claim, Date> dateProcessedColumn;
 
     private String currentUsername;
 
@@ -33,8 +45,12 @@ public class DependentDashboardController {
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
-
-        // Initial data load is not done here since it depends on a specific username
+        addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        claimIdColumn.setCellValueFactory(new PropertyValueFactory<>("claimId"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        dateFiledColumn.setCellValueFactory(new PropertyValueFactory<>("dateFiled"));
+        dateProcessedColumn.setCellValueFactory(new PropertyValueFactory<>("dateProcessed"));
     }
 
     public void setUsername(String username) {
@@ -44,8 +60,11 @@ public class DependentDashboardController {
 
     @FXML
     public void loadDependentData() {
-        ObservableList<User> dependents = FXCollections.observableArrayList();
-        String sql = "SELECT user_id, username, email, phone FROM users WHERE username = ?";
+        ObservableList<Claim> claims = FXCollections.observableArrayList();
+        String sql = "SELECT users.user_id, users.username, users.email, users.phone, users.address, claims.claim_id, claims.status, claims.description, claims.date_filed, claims.date_processed " +
+                "FROM users " +
+                "INNER JOIN claims ON users.user_id = claims.user_id " +
+                "WHERE users.username = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -58,14 +77,21 @@ public class DependentDashboardController {
                     String username = rs.getString("username");
                     String email = rs.getString("email");
                     String phone = rs.getString("phone");
+                    String address = rs.getString("address");
+                    int claimId = rs.getInt("claim_id");
+                    String status = rs.getString("status");
+                    String description = rs.getString("description");
+                    Date dateFiled = rs.getDate("date_filed");
+                    Date dateProcessed = rs.getDate("date_processed");
 
-                    dependents.add(new User(userId, username, null, email, phone, null, 200));
+
+                    claims.add(new Claim(userId, username, email, phone, address, claimId, status, description, dateFiled, dateProcessed));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        dependentTable.setItems(dependents);
+        dependentTable.setItems(claims);
     }
 }

@@ -11,65 +11,87 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
 public class PolicyHolderDashboardController {
 
     @FXML
-    private TableView<Claim> claimsTable;
+    private TableView<Claim> dependentTable;
+    @FXML
+    private TableColumn<Claim, Integer> userIdColumn;
+    @FXML
+    private TableColumn<Claim, String> usernameColumn;
+    @FXML
+    private TableColumn<Claim, String> emailColumn;
+    @FXML
+    private TableColumn<Claim, String> phoneColumn;
+    @FXML
+    private TableColumn<Claim, String> addressColumn;
     @FXML
     private TableColumn<Claim, Integer> claimIdColumn;
     @FXML
-    private TableColumn<Claim, String> dateColumn;
-    @FXML
     private TableColumn<Claim, String> statusColumn;
+    @FXML
+    private TableColumn<Claim, String> descriptionColumn;
+    @FXML
+    private TableColumn<Claim, Date> dateFiledColumn;
+    @FXML
+    private TableColumn<Claim, Date> dateProcessedColumn;
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private String currentUsername;
 
     @FXML
     public void initialize() {
+        userIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
         claimIdColumn.setCellValueFactory(new PropertyValueFactory<>("claimId"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateFilled"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-        // Load data into the table
-        loadClaimsData();
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        dateFiledColumn.setCellValueFactory(new PropertyValueFactory<>("dateFiled"));
+        dateProcessedColumn.setCellValueFactory(new PropertyValueFactory<>("dateProcessed"));
     }
 
-    private void loadClaimsData() {
+    public void setUsername(String username) {
+        this.currentUsername = username;
+        loadDependentData();
+    }
+
+    @FXML
+    public void loadDependentData() {
         ObservableList<Claim> claims = FXCollections.observableArrayList();
-        String sql = "SELECT claim_id, user_id, status, date_filled, date_processed, description FROM Claims"; // Adjust the SQL query as per your table structure
+        String sql = "SELECT users.user_id, users.username, users.email, users.phone, users.address, claims.claim_id, claims.status, claims.description, claims.date_filed, claims.date_processed " +
+                "FROM users " +
+                "INNER JOIN claims ON users.user_id = claims.user_id " +
+                "WHERE users.username = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            while (rs.next()) {
-                int claimId = rs.getInt("claim_id");
-                int userId = rs.getInt("user_id");
-                String status = rs.getString("status");
+            pstmt.setString(1, currentUsername);
+            try (ResultSet rs = pstmt.executeQuery()) {
 
-                Date dateFilled = parseDate(rs.getString("date_filled"));
-                Date dateProcessed = parseDate(rs.getString("date_processed"));
-                String description = rs.getString("description");
+                while (rs.next()) {
+                    int userId = rs.getInt("user_id");
+                    String username = rs.getString("username");
+                    String email = rs.getString("email");
+                    String phone = rs.getString("phone");
+                    String address = rs.getString("address");
+                    int claimId = rs.getInt("claim_id");
+                    String status = rs.getString("status");
+                    String description = rs.getString("description");
+                    Date dateFiled = rs.getDate("date_filed");
+                    Date dateProcessed = rs.getDate("date_processed");
 
-                claims.add(new Claim(claimId, userId, status, dateFilled, dateProcessed, description));
+
+                    claims.add(new Claim(userId, username, email, phone, address, claimId, status, description, dateFiled, dateProcessed));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        claimsTable.setItems(claims);
-    }
-
-    private Date parseDate(String dateString) {
-        try {
-            return DATE_FORMAT.parse(dateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
+        dependentTable.setItems(claims);
     }
 }

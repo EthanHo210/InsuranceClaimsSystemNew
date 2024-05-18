@@ -67,8 +67,23 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent dashboard = loader.load();
 
-            if (user.getRole() == 200) {  // For Dependent role
-                DependentDashboardController controller = loader.getController();
+            if (user.getRole() == 199) {  // For Dependent role
+                PolicyHolderDashboardController controller = loader.getController();
+                controller.setUsername(user.getUsername());
+            }else if (user.getRole() == 200){
+               DependentDashboardController controller = loader.getController();
+                controller.setUsername(user.getUsername());
+            }else if (user.getRole() == 201){
+                PolicyOwnerDashboardController controller = loader.getController();
+                controller.setUsername(user.getUsername());
+            }else if (user.getRole() == 202){
+                InsuranceSurveyorDashboardController controller = loader.getController();
+                controller.setUsername(user.getUsername());
+            }else if (user.getRole() == 203){
+                InsuranceManagerDashboardController controller = loader.getController();
+                controller.setUsername(user.getUsername());
+            }else if (user.getRole() == 204){
+                SystemAdminDashboardController controller = loader.getController();
                 controller.setUsername(user.getUsername());
             }
 

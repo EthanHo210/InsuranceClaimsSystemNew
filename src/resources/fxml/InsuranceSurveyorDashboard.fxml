@@ -7,13 +7,19 @@
 <?import javafx.scene.control.TableView?>
 
 <VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="JavaFiles.InsuranceSurveyorDashboardController">
-    <Label text="Insurance Surveyor Dashboard" style="-fx-font-size: 20px;"/>
-    <Button text="View Assigned Claims"/>
-    <TableView fx:id="assignedClaimsTable">
+    <Label text="Insurance Survey Dashboard" style="-fx-font-size: 20px;"/>
+    <TableView fx:id="dependentTable">
         <columns>
-            <TableColumn text="JavaFiles.Claim ID" fx:id="claimIdColumn" prefWidth="100"/>
-            <TableColumn text="Date" fx:id="dateColumn" prefWidth="150"/>
+            <TableColumn text="User ID" fx:id="userIdColumn" prefWidth="100"/>
+            <TableColumn text="Username" fx:id="usernameColumn" prefWidth="150"/>
+            <TableColumn text="Email" fx:id="emailColumn" prefWidth="200"/>
+            <TableColumn text="Phone" fx:id="phoneColumn" prefWidth="150"/>
+            <TableColumn text="Address" fx:id="addressColumn" prefWidth="150"/>
+            <TableColumn text="Claim ID" fx:id="claimIdColumn" prefWidth="100"/>
             <TableColumn text="Status" fx:id="statusColumn" prefWidth="100"/>
+            <TableColumn text="Description" fx:id="descriptionColumn" prefWidth="200"/>
+            <TableColumn text="Date Filed" fx:id="dateFiledColumn" prefWidth="150"/>
+            <TableColumn text="Date Processed" fx:id="dateProcessedColumn" prefWidth="150"/>
         </columns>
     </TableView>
 </VBox>
