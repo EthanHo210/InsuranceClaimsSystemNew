@@ -43,31 +43,31 @@ public class LoginController {
             String fxmlFile;
             switch (user.getRole()) {
                 case 199:
-                    fxmlFile = "/fxml/PolicyHolderDashboard.fxml";
+                    fxmlFile = "/resources/fxml/PolicyHolderDashboard.fxml";
                     break;
                 case 200:
-                    fxmlFile = "/fxml/DependentDashboard.fxml";
+                    fxmlFile = "/resources/fxml/DependentDashboard.fxml";
                     break;
                 case 201:
-                    fxmlFile = "/fxml/PolicyOwnerDashboard.fxml";
+                    fxmlFile = "/resources/fxml/PolicyOwnerDashboard.fxml";
                     break;
                 case 202:
-                    fxmlFile = "/fxml/InsuranceSurveyorDashboard.fxml";
+                    fxmlFile = "/resources/fxml/InsuranceSurveyorDashboard.fxml";
                     break;
                 case 203:
-                    fxmlFile = "/fxml/InsuranceManagerDashboard.fxml";
+                    fxmlFile = "/resources/fxml/InsuranceManagerDashboard.fxml";
                     break;
                 case 204:
-                    fxmlFile = "/fxml/SystemAdminDashboard.fxml";
+                    fxmlFile = "/resources/fxml/SystemAdminDashboard.fxml";
                     break;
                 default:
-                    throw new IllegalStateException("Unknown role ID: " + user.getRole());
+                    fxmlFile = "/resources/fxml/Login.fxml";
             }
 
-            Parent dashboard = FXMLLoader.load(getClass().getResource(fxmlFile));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            Parent dashboard = loader.load();
             Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.setScene(new Scene(dashboard));
-            stage.setTitle("Insurance Claims Management System - " + user.getUsername());
         } catch (Exception e) {
             e.printStackTrace();
         }
