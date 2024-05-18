@@ -10,15 +10,15 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class LoginController {
+import java.io.IOException;
 
+public class LoginController {
     @FXML
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;
     @FXML
     private Label loginMessageLabel;
-
     @FXML
     private void handleLoginAction(ActionEvent event) {
         String username = usernameField.getText();
@@ -61,16 +61,18 @@ public class LoginController {
                     fxmlFile = "/resources/fxml/SystemAdminDashboard.fxml";
                     break;
                 default:
-                    fxmlFile = "/resources/fxml/Login.fxml";
+                    throw new IllegalArgumentException("Unexpected value: " + user.getRole());
             }
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-            Parent dashboard = loader.load();
-            Stage stage = (Stage) usernameField.getScene().getWindow();
-            stage.setScene(new Scene(dashboard));
+            Parent root = loader.load();
+            Stage stage = (Stage) loginMessageLabel.getScene().getWindow();
+            stage.setScene(new Scene(root));
             stage.show();
-        } catch (Exception e) {
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 }
