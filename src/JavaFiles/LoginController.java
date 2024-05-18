@@ -26,6 +26,7 @@ public class LoginController {
 
         if (user != null) {
             SessionManager.setCurrentUser(user);
+            loginMessageLabel.setText("Login successful!");
         } else {
             loginMessageLabel.setText("Invalid username or password");
         }

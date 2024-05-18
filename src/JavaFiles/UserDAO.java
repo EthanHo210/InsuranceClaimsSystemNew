@@ -8,24 +8,31 @@ import java.sql.SQLException;
 public class UserDAO {
 
     public User authenticate(String username, String password) {
-        String query = "SELECT * FROM users WHERE username = ? AND hashed_password = ?";
+        String sql = "SELECT * FROM Users WHERE username = ? AND password = ?"; // Adjust the SQL query as per your table structure
+
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, username);
-            stmt.setString(2, password);
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
 
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                System.out.println("User found: " + rs.getString("username"));
-                return new User(rs.getInt("user_id"), rs.getString("username"), rs.getString("hashed_password"),
-                        rs.getString("email"), rs.getString("phone"), rs.getString("address"), rs.getInt("role_id"));
-            } else {
-                System.out.println("No user found with provided credentials.");
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return new User(
+                            rs.getInt("user_id"),
+                            rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("email"),
+                            rs.getString("phone"),
+                            rs.getString("address"),
+                            rs.getInt("role_id")
+                    );
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 }
