@@ -18,6 +18,7 @@ public class UserDAO {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
+                    System.out.println("User found: " + rs.getString("username"));
                     return new User(
                             rs.getInt("user_id"),
                             rs.getString("username"),
@@ -27,6 +28,8 @@ public class UserDAO {
                             rs.getString("address"),
                             rs.getInt("role_id")
                     );
+                }else {
+                    System.out.println("User not found");
                 }
             }
         } catch (SQLException e) {
