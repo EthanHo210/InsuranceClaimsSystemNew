@@ -27,7 +27,7 @@ public class SystemAdminDashboardController {
     public void initialize() {
         userIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-        roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
+        roleColumn.setCellValueFactory(new PropertyValueFactory<>("roleId"));
 
         // Load data into the table
         loadUsersData();
@@ -35,14 +35,22 @@ public class SystemAdminDashboardController {
 
     private void loadUsersData() {
         ObservableList<User> users = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM users"; // Adjust the SQL query as per your table structure
+        String sql = "SELECT user_id, username, hashed_password, email, phone, address, role_id FROM users"; // Adjust the SQL query as per your table structure
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                users.add(new User(rs.getInt("user_id"), rs.getString("username"), rs.getString("hashed_password"), rs.getInt("role_id")));
+                users.add(new User(
+                        rs.getInt("user_id"),
+                        rs.getString("username"),
+                        rs.getString("hashed_password"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getInt("role_id")
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();

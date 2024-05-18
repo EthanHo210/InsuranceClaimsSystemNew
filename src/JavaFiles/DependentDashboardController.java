@@ -42,6 +42,7 @@ public class DependentDashboardController {
     private Label dateProcessed;
     @FXML
     private Label beneficiary;
+
     @FXML
     public void initialize() {
         User currentUser = SessionManager.getCurrentUser();
@@ -57,11 +58,14 @@ public class DependentDashboardController {
         dateFilled.setText(claim != null ? claim.getDateFilled().toString() : "");
         dateProcessed.setText(claim != null && claim.getDateProcessed() != null ? claim.getDateProcessed().toString() : "");
         beneficiary.setText(beneficiaryInfo != null ? beneficiaryInfo.getRelationship() : "");
+
+        loadDependentsData();
+        loadClaimantInformation();
     }
 
     private void loadDependentsData() {
         ObservableList<Dependent> dependents = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM Dependents"; // Adjust the SQL query as per your table structure
+        String sql = "SELECT * FROM Users"; // Adjust the SQL query as per your table structure
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -93,11 +97,32 @@ public class DependentDashboardController {
     }
 
     private Claim fetchClaimForUser(User user) {
-        // Implement the logic to fetch the claim for the user
-        // This can be from the database using a DAO class
-        ClaimDAO claimDAO = new ClaimDAO();
-        return claimDAO.getClaimByUserId(user.getUserId());
+        String sql = "SELECT claim_id, user_id, status, date_filled, date_processed FROM claims WHERE user_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, user.getUserId());
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int claimId = rs.getInt("claim_id");
+                int userId = rs.getInt("user_id");
+                String status = rs.getString("status");
+
+                java.sql.Date sqlDateFilled = rs.getDate("date_filled");
+                java.util.Date dateFilled = sqlDateFilled != null ? new java.util.Date(sqlDateFilled.getTime()) : null;
+
+                java.sql.Date sqlDateProcessed = rs.getDate("date_processed");
+                java.util.Date dateProcessed = sqlDateProcessed != null ? new java.util.Date(sqlDateProcessed.getTime()) : null;
+
+                String description = ""; // Provide an appropriate description if required
+
+                return new Claim(claimId, userId, status, dateFilled, dateProcessed, description);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
     private Beneficiary fetchBeneficiaryForUser(User user) {
         // Implement the logic to fetch the beneficiary for the user
         // This can be from the database using a DAO class

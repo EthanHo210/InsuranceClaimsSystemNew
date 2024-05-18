@@ -68,6 +68,7 @@ public class LoginController {
             Parent dashboard = loader.load();
             Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.setScene(new Scene(dashboard));
+            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }

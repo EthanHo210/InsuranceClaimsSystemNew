@@ -19,9 +19,11 @@ public class ClaimDAO {
                 if (rs.next()) {
                     claim = new Claim(
                             rs.getInt("claim_id"),
+                            rs.getInt("user_id"),
                             rs.getString("status"),
                             rs.getDate("date_filled"),
-                            rs.getDate("date_processed")
+                            rs.getDate("date_processed"),
+                            rs.getString("description")
                     );
                 }
             }

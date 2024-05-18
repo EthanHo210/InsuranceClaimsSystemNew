@@ -31,7 +31,7 @@ public class InsuranceManagerDashboardController {
     @FXML
     public void initialize() {
         claimIdColumn.setCellValueFactory(new PropertyValueFactory<>("claimId"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateFilled"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         // Load data into the table
@@ -40,20 +40,22 @@ public class InsuranceManagerDashboardController {
 
     private void loadAllClaimsData() {
         ObservableList<Claim> claims = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM Claims"; // Adjust the SQL query as per your table structure
+        String sql = "SELECT claim_id, user_id, status, date_filled, date_processed, description FROM Claims"; // Adjust the SQL query as per your table structure
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                int claimId = rs.getInt("claimId");
+                int claimId = rs.getInt("claim_id");
+                int userId = rs.getInt("user_id");
                 String status = rs.getString("status");
 
                 Date dateFilled = parseDate(rs.getString("date_filled"));
                 Date dateProcessed = parseDate(rs.getString("date_processed"));
+                String description = rs.getString("description");
 
-                claims.add(new Claim(claimId, status, dateFilled, dateProcessed));
+                claims.add(new Claim(claimId, userId, status, dateFilled, dateProcessed, description));
             }
         } catch (SQLException e) {
             e.printStackTrace();

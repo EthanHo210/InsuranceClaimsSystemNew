@@ -20,14 +20,6 @@ public class User {
         this.roleId = roleId;
     }
 
-    // Another constructor for cases where not all fields are needed
-    public User(int userId, String username, String hashedPassword, int roleId) {
-        this.userId = userId;
-        this.username = username;
-        this.hashedPassword = hashedPassword;
-        this.roleId = roleId;
-    }
-
     // Getters and setters for each field
     public int getUserId() {
         return userId;
@@ -57,4 +49,36 @@ public class User {
     public int getRole() {
         return roleId;
     }
+
+    // Setters
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
+    // Getters for hashedPassword
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    // Setter for hashedPassword
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
+
 }
