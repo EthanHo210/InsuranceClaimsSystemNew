@@ -1,15 +1,19 @@
 package JavaFiles;
 
+import java.util.Date;
+
 public class Claim {
     private int claimId;
-    private String date;
     private String status;
+    private Date dateFilled;
+    private Date dateProcessed;
 
     // Constructor with all fields
-    public Claim(int claimId, String date, String status) {
+    public Claim(int claimId, String status, Date dateFilled, Date dateProcessed) {
         this.claimId = claimId;
-        this.date = date;
         this.status = status;
+        this.dateFilled = dateFilled;
+        this.dateProcessed = dateProcessed;
     }
 
     // Getters and setters
@@ -21,19 +25,27 @@ public class Claim {
         this.claimId = claimId;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Date getDateFilled() {
+        return dateFilled;
+    }
+
+    public void setDateFilled(Date dateFilled) {
+        this.dateFilled = dateFilled;
+    }
+
+    public Date getDateProcessed() {
+        return dateProcessed;
+    }
+
+    public void setDateProcessed(Date dateProcessed) {
+        this.dateProcessed = dateProcessed;
     }
 }

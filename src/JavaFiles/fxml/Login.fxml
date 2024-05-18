@@ -5,16 +5,37 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.paint.Color?>
 
-<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="JavaFiles.LoginController">
-    <GridPane hgap="10" vgap="10">
-        <Label text="Username:"/>
-        <TextField fx:id="usernameField" GridPane.columnIndex="1"/>
-        <Label text="Password:" GridPane.rowIndex="1"/>
-        <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-    </GridPane>
-    <Button text="Login" onAction="#handleLogin"/>
-    <Label fx:id="messageLabel" textFill="red"/>
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaFiles.LoginController" alignment="CENTER" spacing="10">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    <children>
+        <Text text="Welcome" style="-fx-font-size: 24px;"/>
+        <Text text="Please enter your username and password" style="-fx-font-size: 14px;"/>
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <children>
+                <Label text="Username:"/>
+                <TextField fx:id="usernameField" prefWidth="200"/>
+            </children>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <children>
+                <Label text="Password:"/>
+                <PasswordField fx:id="passwordField" prefWidth="200"/>
+            </children>
+        </HBox>
+        <Button text="Login" onAction="#handleLoginAction" />
+        <Label fx:id="loginMessageLabel" textFill="red"/>
+        <TextFlow>
+            <Text text="Not a member? " />
+            <Text text="Click here to create an account" style="-fx-fill: blue; -fx-underline: true;" />
+        </TextFlow>
+    </children>
 </VBox>

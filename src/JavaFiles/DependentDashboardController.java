@@ -3,6 +3,7 @@ package JavaFiles;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -24,13 +25,38 @@ public class DependentDashboardController {
     private TableColumn<Dependent, String> relationshipColumn;
 
     @FXML
+    private Label fullName;
+    @FXML
+    private Label email;
+    @FXML
+    private Label phoneNumber;
+    @FXML
+    private Label address;
+    @FXML
+    private Label claimId;
+    @FXML
+    private Label claimStatus;
+    @FXML
+    private Label dateFilled;
+    @FXML
+    private Label dateProcessed;
+    @FXML
+    private Label beneficiary;
+    @FXML
     public void initialize() {
-        dependentIdColumn.setCellValueFactory(new PropertyValueFactory<>("dependentId"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        relationshipColumn.setCellValueFactory(new PropertyValueFactory<>("relationship"));
+        User currentUser = SessionManager.getCurrentUser();
+        Claim claim = fetchClaimForUser(currentUser);
+        Beneficiary beneficiaryInfo = fetchBeneficiaryForUser(currentUser);
 
-        // Load data into the table
-        loadDependentsData();
+        fullName.setText(currentUser.getUsername());
+        email.setText(currentUser.getEmail());
+        phoneNumber.setText(currentUser.getPhone());
+        address.setText(currentUser.getAddress());
+        claimId.setText(claim != null ? String.valueOf(claim.getClaimId()) : "");
+        claimStatus.setText(claim != null ? claim.getStatus() : "");
+        dateFilled.setText(claim != null ? claim.getDateFilled().toString() : "");
+        dateProcessed.setText(claim != null && claim.getDateProcessed() != null ? claim.getDateProcessed().toString() : "");
+        beneficiary.setText(beneficiaryInfo != null ? beneficiaryInfo.getRelationship() : "");
     }
 
     private void loadDependentsData() {
@@ -49,5 +75,33 @@ public class DependentDashboardController {
         }
 
         dependentsTable.setItems(dependents);
+    }
+
+    private void loadClaimantInformation() {
+        User currentUser = SessionManager.getCurrentUser();
+        Claim claim = fetchClaimForUser(currentUser);
+        Beneficiary beneficiary = fetchBeneficiaryForUser(currentUser);
+        fullName.setText(currentUser.getUsername());
+        email.setText(currentUser.getEmail());
+        phoneNumber.setText(currentUser.getPhone());
+        address.setText(currentUser.getAddress());
+        claimId.setText(claim != null ? String.valueOf(claim.getClaimId()) : "");
+        claimStatus.setText(claim != null ? claim.getStatus() : "");
+        dateFilled.setText(claim != null ? claim.getDateFilled().toString() : "");
+        dateProcessed.setText(claim != null && claim.getDateProcessed() != null ? claim.getDateProcessed().toString() : "");
+        this.beneficiary.setText(beneficiary != null ? beneficiary.getRelationship() : "");
+    }
+
+    private Claim fetchClaimForUser(User user) {
+        // Implement the logic to fetch the claim for the user
+        // This can be from the database using a DAO class
+        ClaimDAO claimDAO = new ClaimDAO();
+        return claimDAO.getClaimByUserId(user.getUserId());
+    }
+    private Beneficiary fetchBeneficiaryForUser(User user) {
+        // Implement the logic to fetch the beneficiary for the user
+        // This can be from the database using a DAO class
+        BeneficiaryDAO beneficiaryDAO = new BeneficiaryDAO();
+        return beneficiaryDAO.getBeneficiaryByUserId(user.getUserId());
     }
 }

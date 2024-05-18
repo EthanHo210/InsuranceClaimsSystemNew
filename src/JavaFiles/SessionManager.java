@@ -1,17 +1,20 @@
 package JavaFiles;
 
-public class SessionManager {
-    private static User currentUser;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
-    public static void setCurrentUser(User user) {
-        currentUser = user;
-    }
+public class SessionManager {
+    private static final ObjectProperty<User> currentUser = new SimpleObjectProperty<>();
 
     public static User getCurrentUser() {
-        return currentUser;
+        return currentUser.get();
     }
 
-    public static void clearSession() {
-        currentUser = null;
+    public static void setCurrentUser(User user) {
+        currentUser.set(user);
+    }
+
+    public static ObjectProperty<User> currentUserProperty() {
+        return currentUser;
     }
 }
