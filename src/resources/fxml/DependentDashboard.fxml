@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TableView?>
 
 <VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="JavaFiles.DependentDashboardController">
-    <Label text="Dependent Users Dashboard" style="-fx-font-size: 20px;"/>
+    <Label text="Dependent Dashboard" style="-fx-font-size: 20px;"/>
     <Button text="Refresh Data" onAction="#loadDependentData"/>
     <TableView fx:id="dependentTable">
         <columns>

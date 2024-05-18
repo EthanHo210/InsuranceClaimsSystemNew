@@ -25,6 +25,8 @@ public class DependentDashboardController {
     @FXML
     private TableColumn<User, String> phoneColumn;
 
+    private String currentUsername;
+
     @FXML
     public void initialize() {
         userIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
@@ -32,18 +34,23 @@ public class DependentDashboardController {
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
 
-        // Load data into the table
+        // Initial data load is not done here since it depends on a specific username
+    }
+
+    public void setUsername(String username) {
+        this.currentUsername = username;
         loadDependentData();
     }
+
     @FXML
     public void loadDependentData() {
         ObservableList<User> dependents = FXCollections.observableArrayList();
-        String sql = "SELECT user_id, username, email, phone FROM users WHERE role_id = ?";
+        String sql = "SELECT user_id, username, email, phone FROM users WHERE username = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, 200);  // Assuming role_id for dependents is 200
+            pstmt.setString(1, currentUsername);
             try (ResultSet rs = pstmt.executeQuery()) {
 
                 while (rs.next()) {
