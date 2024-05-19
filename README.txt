@@ -11,3 +11,13 @@ If you want to see the demo of this project, here are the links to the demo:
 We would like to thank you for your support and we whole-heartedly would love your review on it
 
 Team 16
+
+
+
+Team Contributions:
+- Ho Anh Khoa (s3978965): Project Manager, Backend coder and editor
+- Nguyen Linh Chi (s3878609): Assistant Project Manager, Frontend JavaFX coder and editor
+- Nguyen Minh Phu (s3802460): Database Connection, Login, and Logout researcher. Responsible for researching on how to connect database from Java code to Neon.
+- Arunkumar Sriharish Muthumalai (s3938156): Database maker and hoster, responsible for creating all the data that is hosted on Neon. Report writer.
+
+We decide to split the points equally.
