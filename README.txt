@@ -1,6 +1,6 @@
 Welcome to our Insurance Claims System Program
 
-With this applicaiton, users who submitted their claims or who recently jsut had a doctor's appointment would be able to view, edit, update and see their claims.
+With this application, users who submitted their claims or who recently just had a doctor's appointment would be able to view, edit, update and see their claims.
 
 Our goal is to make a program that is not only user-friendly but also shows the capability of our knowledge in regards of coding with Java and FXML.
 
@@ -18,6 +18,6 @@ Team Contributions:
 - Ho Anh Khoa (s3978965): Project Manager, Backend coder and editor
 - Nguyen Linh Chi (s3878609): Assistant Project Manager, Frontend JavaFX coder and editor
 - Nguyen Minh Phu (s3802460): Database Connection, Login, and Logout researcher. Responsible for researching on how to connect database from Java code to Neon.
-- Arunkumar Sriharish Muthumalai (s3938156): Database maker and hoster, responsible for creating all the data that is hosted on Neon. Report writer.
+- Arunkumar Sriharish Muthumalai (s3938156): Database maker and host, responsible for creating all the data that is hosted on Neon. Report writer.
 
 We decide to split the points equally.
