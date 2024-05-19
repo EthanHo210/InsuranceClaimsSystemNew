@@ -1,3 +1,6 @@
+/**
+ Ho Anh Khoa, Nguyen Minh Phu & Nguyen Linh Chi <Group 13> <Group 13>
+ */
 package JavaFiles;
 
 import javafx.event.ActionEvent;
