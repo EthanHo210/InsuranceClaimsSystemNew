@@ -6,12 +6,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-
+import javafx.application.Platform;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import javafx.scene.control.Alert;
+import javafx.event.ActionEvent;
+import javafx.util.Duration;
+import javafx.animation.PauseTransition;
 
 public class SystemAdminDashboardController {
 
@@ -208,5 +212,19 @@ public class SystemAdminDashboardController {
         }
 
         dependentTable.setItems(dependents);
+    }
+    @FXML
+    private void handleLogout(ActionEvent event) {
+        // Show thank you alert
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText(null);
+        alert.setContentText("Thank you for using the program.");
+        alert.show();
+
+        // Close the application after 0.5 seconds
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+        pause.setOnFinished(e -> Platform.exit());
+        pause.play();
     }
 }
