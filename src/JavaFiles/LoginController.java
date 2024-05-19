@@ -41,7 +41,7 @@ public class LoginController {
     private void loadDashboard(User user) {
         try {
             String fxmlFile;
-            switch (user.getRole()) {
+            switch (user.getRoleId()) {
                 case 199:
                     fxmlFile = "/resources/fxml/PolicyHolderDashboard.fxml";
                     break;
@@ -67,22 +67,22 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent dashboard = loader.load();
 
-            if (user.getRole() == 199) {  // For Dependent role
+            if (user.getRoleId() == 199) {  // For Dependent role
                 PolicyHolderDashboardController controller = loader.getController();
                 controller.setUsername(user.getUsername());
-            }else if (user.getRole() == 200){
-               DependentDashboardController controller = loader.getController();
+            }else if (user.getRoleId() == 200){
+                DependentDashboardController controller = loader.getController();
                 controller.setUsername(user.getUsername());
-            }else if (user.getRole() == 201){
+            }else if (user.getRoleId() == 201){
                 PolicyOwnerDashboardController controller = loader.getController();
                 controller.setUsername(user.getUsername());
-            }else if (user.getRole() == 202){
+            }else if (user.getRoleId() == 202){
                 InsuranceSurveyorDashboardController controller = loader.getController();
                 controller.setUsername(user.getUsername());
-            }else if (user.getRole() == 203){
+            }else if (user.getRoleId() == 203){
                 InsuranceManagerDashboardController controller = loader.getController();
                 controller.setUsername(user.getUsername());
-            }else if (user.getRole() == 204){
+            }else if (user.getRoleId() == 204){
                 SystemAdminDashboardController controller = loader.getController();
                 controller.setUsername(user.getUsername());
             }
